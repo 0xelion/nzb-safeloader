@@ -81,7 +81,7 @@ echo "--- Step 2 - Packing ---"
 
 echo "--- Step 3 - Parchiving ---"
 
-if [ $USEPAR = "True" ]
+if [ $USEPAR = "true" ]
 then
   $PARPAR -s 400k -r $REDUN -o "$DIR/Temp/$HASH.par2" "$DIR/Temp/"*7z*
 fi
