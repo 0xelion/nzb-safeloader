@@ -17,10 +17,12 @@ KEY="PlaceYourEncryptionKeyHere"
 OBFS="true"
 # Create result files?
 RESULT="true"
+# Max archive size:
+SIZE="50m"
 
 # Use parchive?
 USEPAR="true"
-# Parchive redundancy
+# Parchive redundancy:
 REDUN="10%"
 
 # Server url:
@@ -37,7 +39,7 @@ PASS="MyPassword"
 MAXCO="10"
 
 # Article size:
-SIZE="700K"
+ASIZE="700K"
 # Article poster:
 POSTER="YourName <YourName@local>"
 # Article group:
@@ -77,18 +79,18 @@ fi
 
 echo "--- Step 2 - Packing ---"
 
-7z a -mx0 -v50m -mhe=on -p"$KEY" "$DIR/Temp/$HASH.7z" "$DIR/Upload/*"
+7z a -mx0 -v$SIZE -mhe=on -p"$KEY" "$DIR/Temp/$HASH.7z" "$DIR/Upload/*"
 
 echo "--- Step 3 - Parchiving ---"
 
 if [ $USEPAR = "true" ]
 then
-  $PARPAR -s 400k -r $REDUN -o "$DIR/Temp/$HASH.par2" "$DIR/Temp/"*7z*
+  $PARPAR -s 400k -r $REDUN -p $SIZE -o "$DIR/Temp/$HASH.par2" "$DIR/Temp/"*7z*
 fi
 
 echo "--- Step 4 - Uploading ---"
 
-$NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$SIZE" -f "$POSTER" -g "$GROUP" -o "$DIR/Completed/$NAME.nzb" $DIR/Temp/*
+$NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$ASIZE" -f "$POSTER" -g "$GROUP" -o "$DIR/Completed/$NAME.nzb" $DIR/Temp/*
 
 echo "--- Step 5 - Cleaning Up ---"
 
