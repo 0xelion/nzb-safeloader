@@ -15,8 +15,8 @@ KEY="PlaceYourEncryptionKeyHere"
 
 # Obfuscate nzb filename?
 OBFS="true"
-# Create result files?
-RESULT="true"
+# Create log file? (include password)
+LOG="true"
 
 # Split archives?
 SPIT="true"
@@ -53,7 +53,7 @@ GROUP="alt.binaries.backup"
 echo "--- Step 1 - Preparing ---"
 
 HASH=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-FILE=$(ls $DIR/Upload)
+DATE=`date '+%Y.%m.%d | %H:%M:%S'`
 
 mkdir -p $DIR/Upload
 mkdir -p $DIR/Temp
@@ -63,10 +63,13 @@ if [ $OBFS = "true" ] ; then
   NAME="$HASH" ; else
   NAME=$(ls $DIR/Upload/ | head -1) ; fi
 
-if [ $RESULT = "true" ] ; then
-  echo "Filename(s)" : $FILE >> $DIR/Completed/$NAME.txt
-  echo "Filename" Obfuscated : $HASH >> $DIR/Completed/$NAME.txt
-  echo Password : $KEY >> $DIR/Completed/$NAME.txt ; fi
+if [ $LOG = "true" ] ; then
+  echo -------------------------------------------------------- >> $DIR/safeloader.log
+  echo Date : $DATE >> $DIR/safeloader.log
+  echo Original "Filename(s)" : >> $DIR/safeloader.log
+  ls $DIR/Upload >> $DIR/safeloader.log
+  echo Archive "Filename" : $HASH >> $DIR/safeloader.log
+  echo Password : $KEY >> $DIR/safeloader.log ; fi
 
 echo "--- Step 2 - Packing ---"
 
