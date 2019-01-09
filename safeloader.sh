@@ -5,15 +5,15 @@
 # Work directory:
 DIR=$(pwd)
 
-# Nyuu location:
+# Nyuu path:
 NYUU="nyuu"
-# ParPar location:
+# ParPar path:
 PARPAR="parpar"
 
 # Encryption password:
 KEY="PlaceYourEncryptionKeyHere"
 
-# Obfuscated nzb filename?
+# Obfuscate nzb filename?
 OBFS="true"
 # Create result files?
 RESULT="true"
@@ -59,34 +59,21 @@ mkdir -p $DIR/Upload
 mkdir -p $DIR/Temp
 mkdir -p $DIR/Completed
 
-if [ $SSL = "true" ]
-then
-  SSLF="-S"
-else
-  SSLF=""
-fi
+if [ $OBFS = "true" ] ; then
+  NAME="$HASH" ; else
+  NAME=$(ls $DIR/Upload/ | head -1) ; fi
 
-if [ $OBFS = "true" ]
-then
-  NAME="$HASH"
-else
-  NAME=$(ls $DIR/Upload/ | head -1)
-fi
-
-if [ $RESULT = "true" ]
-then
+if [ $RESULT = "true" ] ; then
   echo "Filename(s)" : $FILE >> $DIR/Completed/$NAME.txt
   echo "Filename" Obfuscated : $HASH >> $DIR/Completed/$NAME.txt
-  echo Password : $KEY >> $DIR/Completed/$NAME.txt
-fi
+  echo Password : $KEY >> $DIR/Completed/$NAME.txt ; fi
 
 echo "--- Step 2 - Packing ---"
 
 ZARG="-mx0 -mhe=on -p$KEY"
 
 if [ $SPLIT = "true" ] ; then
-  ZARG="$ZARG -v$SIZE"
-fi
+  ZARG="$ZARG -v$SIZE" ; fi
 
 7z a $ZARG "$DIR/Temp/$HASH.7z" "$DIR/Upload/*"
 
@@ -95,17 +82,17 @@ echo "--- Step 3 - Parchiving ---"
 PARG="-s 400k -r $REDUN"
 
 if [ $SPLIT = "true" ] ; then
-  PARG="$PARG -p $SIZE"
-fi
+  PARG="$PARG -p $SIZE" ; fi
 
-if [ $USEPAR = "true" ]
-then
-  $PARPAR $PARG -o "$DIR/Temp/$HASH.par2" "$DIR/Temp/"*7z*
-else
-  echo "(SKIPPED)"
-fi
+if [ $USEPAR = "true" ] ; then
+  $PARPAR $PARG -o "$DIR/Temp/$HASH.par2" "$DIR/Temp/"*7z* ; else
+  echo "(SKIPPED)" ; fi
 
 echo "--- Step 4 - Uploading ---"
+
+if [ $SSL = "true" ] ; then
+  SSLF="-S" ; else
+  SSLF="" ; fi
 
 $NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$ASIZE" -f "$POSTER" -g "$GROUP" -o "$DIR/Completed/$NAME.nzb" $DIR/Temp/*
 
