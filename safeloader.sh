@@ -17,6 +17,9 @@ KEY="PlaceYourEncryptionKeyHere"
 OBFS="true"
 # Create result files?
 RESULT="true"
+
+# Split archives?
+SPIT="true"
 # Max archive size:
 SIZE="50m"
 
@@ -79,13 +82,27 @@ fi
 
 echo "--- Step 2 - Packing ---"
 
-7z a -mx0 -v$SIZE -mhe=on -p"$KEY" "$DIR/Temp/$HASH.7z" "$DIR/Upload/*"
+ZARG="-mx0 -mhe=on -p$KEY"
+
+if [ $SPLIT = "true" ] ; then
+  ZARG="$ZARG -v$SIZE"
+fi
+
+7z a $ZARG "$DIR/Temp/$HASH.7z" "$DIR/Upload/*"
 
 echo "--- Step 3 - Parchiving ---"
 
+PARG="-s 400k -r $REDUN"
+
+if [ $SPLIT = "true" ] ; then
+  PARG="$PARG -p $SIZE"
+fi
+
 if [ $USEPAR = "true" ]
 then
-  $PARPAR -s 400k -r $REDUN -p $SIZE -o "$DIR/Temp/$HASH.par2" "$DIR/Temp/"*7z*
+  $PARPAR $PARG -o "$DIR/Temp/$HASH.par2" "$DIR/Temp/"*7z*
+else
+  echo "(SKIPPED)"
 fi
 
 echo "--- Step 4 - Uploading ---"
