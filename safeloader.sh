@@ -48,6 +48,9 @@ POSTER="YourName <YourName@local>"
 # Article group:
 GROUP="alt.binaries.backup"
 
+# Debug mode (Upload and cleanup disabled)
+DEBUG="false"
+
 #////////////////////////////////////////
 
 echo "--- Step 1 - Preparing ---"
@@ -97,10 +100,12 @@ if [ $SSL = "true" ] ; then
   SSLF="-S" ; else
   SSLF="" ; fi
 
-$NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$ASIZE" -f "$POSTER" -g "$GROUP" -o "$DIR/Completed/$NAME.nzb" $DIR/Temp/*
+if [ $DEBUG = "false" ] ; then
+  $NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$ASIZE" -f "$POSTER" -g "$GROUP" -o "$DIR/Completed/$NAME.nzb" $DIR/Temp/* ; fi
 
 echo "--- Step 5 - Cleaning Up ---"
 
-rm -r $DIR/Temp/*
+if [ $DEBUG = "false" ] ; then
+  rm -r $DIR/Temp/* ; fi
 
 echo "--- Done ---"
