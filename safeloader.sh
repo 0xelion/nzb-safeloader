@@ -101,11 +101,13 @@ if [ $SSL = "true" ] ; then
   SSLF="" ; fi
 
 if [ $DEBUG = "false" ] ; then
-  $NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$ASIZE" -f "$POSTER" -g "$GROUP" -o "$DIR/Completed/$NAME.nzb" $DIR/Temp/* ; fi
+  $NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$ASIZE" -f "$POSTER" -g "$GROUP" -o "$DIR/Completed/$NAME.nzb" $DIR/Temp/* ; else
+  echo "(SKIPPED)" ; fi
 
 echo "--- Step 5 - Cleaning Up ---"
 
 if [ $DEBUG = "false" ] ; then
-  rm -r $DIR/Temp/* ; fi
+  rm -r $DIR/Temp/* ; else
+  echo "(SKIPPED)" ; fi
 
 echo "--- Done ---"
