@@ -16,7 +16,11 @@ NYUU="nyuu"
 # ParPar path:
 PARPAR="parpar"
 
-# Encryption password:
+# Use encryption?
+ENC="true"
+# Random encryption password?
+ENC="false"
+# If false, custom password:
 KEY="PlaceYourEncryptionKeyHere"
 
 # Obfuscate nzb filename?
@@ -85,6 +89,9 @@ mkdir -p $UPL
 mkdir -p $TMP
 mkdir -p $CPL
 
+if [ $ENCR = "true" ] ; then
+  KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1) ; fi
+
 if [ $OBFS = "true" ] ; then
   NAME="$HASH" ; else
   NAME=$(ls $UPL | head -1) ; fi
@@ -99,7 +106,10 @@ if [ $LOG = "true" ] ; then
 
 echo "--- Step 2 - Packing ---"
 
-ZARG="-mx0 -mhe=on -p$KEY"
+ZARG="-mx0 -mhe=on"
+
+if [ $ENC = "true" ] ; then
+  ZARG="$ZARG -p$KEY" ; fi
 
 if [ $SPLIT = "true" ] ; then
   ZARG="$ZARG -v$SIZE" ; fi
