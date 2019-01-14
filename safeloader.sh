@@ -4,6 +4,12 @@
 
 # Work directory:
 DIR=$(pwd)
+# Upload directory:
+UPL="$DIR/Upload"
+# Temporary directory
+TMP="$DIR/Temp"
+# Output directory
+CPL="$DIR/Completed"
 
 # Nyuu path:
 NYUU="nyuu"
@@ -75,19 +81,19 @@ echo "--- Step 1 - Preparing ---"
 HASH=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 DATE=`date '+%Y.%m.%d | %H:%M:%S'`
 
-mkdir -p $DIR/Upload
-mkdir -p $DIR/Temp
-mkdir -p $DIR/Completed
+mkdir -p $UPL
+mkdir -p $TMP
+mkdir -p $CPL
 
 if [ $OBFS = "true" ] ; then
   NAME="$HASH" ; else
-  NAME=$(ls $DIR/Upload/ | head -1) ; fi
+  NAME=$(ls $UPL | head -1) ; fi
 
 if [ $LOG = "true" ] ; then
   echo -------------------------------------------------------- >> $DIR/safeloader.log
   echo Date : $DATE >> $DIR/safeloader.log
   echo Original "Filename(s)" : >> $DIR/safeloader.log
-  ls $DIR/Upload >> $DIR/safeloader.log
+  ls $UPL >> $DIR/safeloader.log
   echo Archive "Filename" : $HASH >> $DIR/safeloader.log
   echo Password : $KEY >> $DIR/safeloader.log ; fi
 
@@ -98,7 +104,7 @@ ZARG="-mx0 -mhe=on -p$KEY"
 if [ $SPLIT = "true" ] ; then
   ZARG="$ZARG -v$SIZE" ; fi
 
-7z a $ZARG "$DIR/Temp/$HASH.7z" "$DIR/Upload/*"
+7z a $ZARG "$TMP/$HASH.7z" "$UPL/*"
 
 echo "--- Step 3 - Parchiving ---"
 
@@ -108,7 +114,7 @@ if [ $SPLIT = "true" ] ; then
   PARG="$PARG -p $SIZE" ; fi
 
 if [ $USEPAR = "true" ] ; then
-  $PARPAR $PARG -o "$DIR/Temp/$HASH.par2" "$DIR/Temp/"*7z* ; else
+  $PARPAR $PARG -o "$TMP/$HASH.par2" "$TMP/"*7z* ; else
   echo "(SKIPPED)" ; fi
 
 echo "--- Step 4 - Uploading ---"
@@ -118,13 +124,13 @@ if [ $SSL = "true" ] ; then
   SSLF="" ; fi
 
 if [ $DEBUG = "false" ] ; then
-  $NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$ASIZE" -f "$POSTER" -g "$GROUP" -o "$DIR/Completed/$NAME.nzb" $DIR/Temp/* ; else
+  $NYUU -h "$HOST" -P "$PORT" "$SSLF" -u "$USER" -p "$PASS" -n "$MAXCO" -a "$ASIZE" -f "$POSTER" -g "$GROUP" -o "$CPL/$NAME.nzb" $TMP/* ; else
   echo "(SKIPPED)" ; fi
 
 echo "--- Step 5 - Cleaning Up ---"
 
 if [ $DEBUG = "false" ] ; then
-  rm -r $DIR/Temp/* ; else
+  rm -r $TMP/* ; else
   echo "(SKIPPED)" ; fi
 
 echo "--- Done ---"
