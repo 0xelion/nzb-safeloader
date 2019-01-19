@@ -75,7 +75,7 @@ if [ "$?" != 0 ] ; then
     echo "Error : check your ParPar installation."
     exit 1 ; fi
 
-CHKDIR=$(ls -l $DIR/Upload)
+CHKDIR=$(ls -l $UPL)
 if [ "$CHKDIR" = "total 0" ] ; then
     echo "Error : You don't have any files in your upload folder."
     exit 1 ; fi
