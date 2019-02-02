@@ -65,6 +65,10 @@ DEBUG="false"
 
 echo "--- Checking ---"
 
+mkdir -p $UPL
+mkdir -p $TMP
+mkdir -p $CPL
+
 $NYUU --help &> /dev/null
 if [ "$?" != 0 ] ; then
     echo "Error : check your Nyuu installation."
@@ -78,16 +82,14 @@ if [ "$?" != 0 ] ; then
 CHKDIR=$(ls -l $UPL)
 if [ "$CHKDIR" = "total 0" ] ; then
     echo "Error : You don't have any files in your upload folder."
+    exit 1 ; elif [[ "$?" != 0 ]]; then
+    echo "Error : You don't have any files in your upload folder."
     exit 1 ; fi
 
 echo "--- Step 1 - Preparing ---"
 
 HASH=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 DATE=`date '+%Y.%m.%d | %H:%M:%S'`
-
-mkdir -p $UPL
-mkdir -p $TMP
-mkdir -p $CPL
 
 if [ $ENCR = "true" ] ; then
   KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1) ; fi
