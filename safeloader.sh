@@ -29,7 +29,7 @@ OBFS="true"
 LOG="true"
 
 # Split archives?
-SPIT="true"
+SPLIT="true"
 # Max archive size:
 SIZE="50m"
 
