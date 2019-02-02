@@ -19,7 +19,7 @@ PARPAR="parpar"
 # Use encryption?
 ENC="true"
 # Random encryption password?
-ENC="false"
+ENCR="false"
 # If false, custom password:
 KEY="PlaceYourEncryptionKeyHere"
 
