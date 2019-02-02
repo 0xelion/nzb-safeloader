@@ -12,7 +12,7 @@
 Note: Please use the master git branch for parpar and not the v0.3.0 that will not work!
 
 ## Configuration
-Just edit the configuration part in the `safeloader.sh` file.
+Just edit the configuration in the `config.cfg` file.
 
 ## Todo list
 - ~~Optional encryption~~
@@ -20,7 +20,7 @@ Just edit the configuration part in the `safeloader.sh` file.
 - ~~More redundancy options~~
 - More obfuscation options
 - Compression options
-- Separated configuration file
+- ~~Separated configuration file~~
 - Secondary usenet provider support
 
 ## License
