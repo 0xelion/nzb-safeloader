@@ -12,7 +12,7 @@
 Note: Please use the master git branch for parpar and not the v0.3.0 that will not work!
 
 ## Configuration
-Just edit the configuration in the `config.cfg` file.
+Just edit the configuration in the `config.sh` file.
 
 ## Todo list
 - ~~Optional encryption~~
