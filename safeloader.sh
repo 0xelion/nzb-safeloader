@@ -82,7 +82,7 @@ if [ "$?" != 0 ] ; then
 CHKDIR=$(ls -l $UPL)
 if [ "$CHKDIR" = "total 0" ] ; then
     echo "Error : You don't have any files in your upload folder."
-    exit 1 ; elif [[ "$?" != 0 ]]; then
+    exit 1 ; elif [ "$?" != 0 ]; then
     echo "Error : You don't have any files in your upload folder."
     exit 1 ; fi
 
