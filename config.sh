@@ -26,7 +26,7 @@ ENCR="true"
 KEY="PlaceYourEncryptionKeyHere"
 
 # Obfuscate nzb filename?
-OBFS="true"
+OBFS="false"
 # Create log file? (include password)
 LOG="true"
 
@@ -38,7 +38,7 @@ SIZE="250m"
 # Use parchive?
 USEPAR="true"
 # Parchive redundancy:
-REDUN="10%"
+REDUN="15%"
 
 # Server url:
 HOST="my.usenetserver.com"
