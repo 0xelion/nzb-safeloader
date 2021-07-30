@@ -21,7 +21,7 @@ PARPAR="parpar"
 # Use encryption?
 ENC="true"
 # Random encryption password?
-ENCR="false"
+ENCR="true"
 # If false, custom password:
 KEY="PlaceYourEncryptionKeyHere"
 
@@ -33,7 +33,7 @@ LOG="true"
 # Split archives?
 SPLIT="true"
 # Max archive size:
-SIZE="50m"
+SIZE="250m"
 
 # Use parchive?
 USEPAR="true"
